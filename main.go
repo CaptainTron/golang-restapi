@@ -17,8 +17,6 @@ func main() {
 	defer session.Disconnect(context.TODO())
 	uc := controllers.NewController(session, "sample", "sample")
 
-
-
 	r.GET("/users", uc.GetAllUser)
 	r.GET("/user/:id", uc.GetUser)
 	r.POST("/createuser", uc.PostUser)

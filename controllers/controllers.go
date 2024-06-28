@@ -7,13 +7,9 @@ import (
 	"fmt"
 	"time"
 
-	// "go/constant"
-
-	// "io/ioutil"
 	"net/http"
 	"strconv"
 
-	// "github.com/julienschmidt/httprouter"
 
 	"github.com/julienschmidt/httprouter"
 	"go.mongodb.org/mongo-driver/bson"
@@ -110,8 +106,10 @@ func (uc UserController) PostUser(w http.ResponseWriter, r *http.Request, _ http
 	coll := uc.client.Database(uc.database).Collection(uc.collection)
 	var newUser models.User
 
+
 	err := json.NewDecoder(r.Body).Decode(&newUser)
 	handle_error(err)
+
 
 	newUser.Id = primitive.NewObjectID()
 	_, err = coll.InsertOne(ctx, newUser)
@@ -194,9 +192,4 @@ func handle_error(err error) {
 		panic(err)
 		return
 	}
-}
-
-// throw error
-func throw_error(err string) {
-	panic(err)
 }
