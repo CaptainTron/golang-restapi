@@ -1,36 +1,26 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"github.com/julienschmidt/httprouter"
-	"example/learn/controllers"
-	"net/http"
+	"log"
 )
 
 func main() {
-	r := httprouter.New()
 
-	session := ConnectToMongo("mongodb://127.0.0.1:27017")
-	defer session.Disconnect(context.TODO())
-	uc := controllers.NewController(session, "sample", "sample")
-
-	r.GET("/users", uc.GetAllUser)
-	r.GET("/user/:id", uc.GetUser)
-	r.POST("/createuser", uc.PostUser)
-	r.PATCH("/updateuser/:id", uc.UpdateUser)
-	r.DELETE("/user/:id", uc.DeleteUser)
-
-	fmt.Println("Server is Listening to port 9000...")
-	http.ListenAndServe("localhost:9000", r)
-}
-
-func ConnectToMongo(uri string) *mongo.Client {
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
+	mongostore, err := ConnectToMongoDB("mongodb://127.0.0.1:27017", "sample", "sample")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
-	return client
+
+
+	// postgres, err := NewPostgresStore("user=postgres dbname=postgres password=user sslmode=disable")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// if err := postgres.Init(); err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	server := NewAPIServer(":3000", mongostore)
+	server.Run()
 }
