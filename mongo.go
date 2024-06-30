@@ -5,17 +5,9 @@ import (
 	"errors"
 	"fmt"
 
-	// "encoding/json"
-
-	// "fmt"
 	"time"
 
-	// "net/http"
-	// "strconv"
-
-	// "github.com/julienschmidt/httprouter"
 	"go.mongodb.org/mongo-driver/bson"
-	// "go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -29,9 +21,6 @@ type MongoStore struct {
 type Server_message struct {
 	Message string `json:"message"`
 	Status  string `json:"status"`
-
-	// Result    []models.User `json:"result,omitempty"`
-	// ResultOne *models.User  `json:"resultone,omitempty"`
 }
 
 // Connect to MongoDB
@@ -157,7 +146,7 @@ func (m *MongoStore) TransferAmount(fromID, toID, amount int) error {
 	}
 
 	if updateResult.ModifiedCount == 0 {
-		return errors.New("Insufficient funds")
+		return errors.New("insufficient funds")
 	}
 
 	// Update receiver balance
