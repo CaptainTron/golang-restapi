@@ -28,7 +28,7 @@ func NewAccount(FirstName, LastName string) *Account {
 		Number:    int64(rand.Intn(100000)),
 		CreatedAt: time.Now().UTC(),
 
-		Balance: 3000,
+		// Balance: 3000,
 	}
 }
 

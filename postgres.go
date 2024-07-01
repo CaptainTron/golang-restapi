@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	_ "github.com/lib/pq"
 )
@@ -50,12 +51,10 @@ func (s *PostgresStore) CreateAccount(acc *Account) error {
 	query := `insert into account (first_name, last_name, number, balance, created_at)
 	values($1, $2, $3, $4, $5)`
 
-	resp, err := s.db.Query(query, acc.FirstName, acc.LastName, acc.Number, acc.Balance, acc.CreatedAt)
+	_, err := s.db.Query(query, acc.FirstName, acc.LastName, acc.Number, acc.Balance, acc.CreatedAt)
 	if err != nil {
 		return err
 	}
-
-	fmt.Printf("%+v\n", resp)
 	return nil
 }
 
@@ -90,22 +89,15 @@ func (s *PostgresStore) DeleteAccount(id int) error {
 }
 
 func (s *PostgresStore) GetAccountByID(id int) (*Account, error) {
-	// 1. Prepare the statement with a placeholder
-	stmt, err := s.db.Prepare("SELECT * FROM account WHERE id = $1")
+	rows, err := s.db.Query("select * from account where id = $1", id)
 	if err != nil {
 		return nil, err
 	}
-	row := stmt.QueryRow(id)
-	account := &Account{}
-	err = row.Scan(&account.ID, &account.FirstName, &account.LastName, &account.Number, &account.Balance, &account.CreatedAt)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, nil
-		}
-		return nil, err
+	for rows.Next() {
+		return scanIntoAccount(rows)
 	}
-	defer stmt.Close()
-	return account, nil
+	return nil, fmt.Errorf("account with id: %d does not exist", id)
+
 }
 
 func (s *PostgresStore) GetAccounts() ([]*Account, error) {
@@ -116,21 +108,31 @@ func (s *PostgresStore) GetAccounts() ([]*Account, error) {
 
 	accounts := []*Account{}
 	for rows.Next() {
-		account := new(Account)
-		err := rows.Scan(
-			&account.ID,
-			&account.FirstName,
-			&account.LastName,
-			&account.Number,
-			&account.Balance,
-			&account.CreatedAt,
-		)
+		// This will get the account rows data
+		account, err := scanIntoAccount(rows)
 		if err != nil {
-			return nil, err
+			log.Fatal(err)
 		}
 		accounts = append(accounts, account)
 	}
 	return accounts, nil
+}
+
+// Scan to Rows
+func scanIntoAccount(rows *sql.Rows) (*Account, error) {
+	account := new(Account)
+	err := rows.Scan(
+		&account.ID,
+		&account.FirstName,
+		&account.LastName,
+		&account.Number,
+		&account.Balance,
+		&account.CreatedAt,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return account, nil
 }
 
 func (s *PostgresStore) TransferAmount(fromID, toID, amount int) error {
