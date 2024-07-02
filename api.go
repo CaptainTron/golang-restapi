@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	// "time"
 
 	"github.com/gorilla/mux"
 
@@ -20,6 +19,8 @@ type Storage interface {
 	GetAccounts() ([]*Account, error)
 	GetAccountByID(int) (*Account, error)
 	TransferAmount(int, int, int) error
+	GetAccountByNumber(int) (*Account, error)
+	LoginUser(*Login) error
 }
 
 type APIServer struct {
@@ -37,6 +38,7 @@ func NewAPIServer(listen string, store Storage) *APIServer {
 func (s *APIServer) Run() {
 	router := mux.NewRouter()
 
+	router.HandleFunc("/login", (makeHTTPHandlerFunc(s.handleLogin)))
 	router.HandleFunc("/account", (makeHTTPHandlerFunc(s.handleAccount)))
 	router.HandleFunc("/account_transfer", makeHTTPHandlerFunc(s.handleTransfer))
 	router.HandleFunc("/account_id/{id}", withJWTAuth(makeHTTPHandlerFunc(s.handleGetAccountByID), s.store))
@@ -44,6 +46,36 @@ func (s *APIServer) Run() {
 
 	log.Println("Server running on port: ", s.listenAddr)
 	http.ListenAndServe(s.listenAddr, router)
+}
+
+func (s *APIServer) handleLogin(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != "POST" {
+		return fmt.Errorf("method is not allowed %s", r.Method)
+	}
+
+	login := &Login{}
+	if err := json.NewDecoder(r.Body).Decode(&login); err != nil {
+		return err
+	}
+
+	newuser, err := LoginAccount(login.FirstName, login.LastName, login.Password, login.Number)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("New User %d", newuser.Number)
+
+	if err := s.store.LoginUser(newuser); err != nil {
+		return err
+	}
+
+	// fmt.Println("Creating JWT")
+	// tokenString, err := createJWT(login)
+	// if err != nil {
+	// 	return err
+	// }
+	// fmt.Println(tokenString)
+
+	return writeJSON(w, http.StatusOK, newuser)
 }
 
 func (s *APIServer) handleAccount(w http.ResponseWriter, r *http.Request) error {
@@ -81,22 +113,18 @@ func (s *APIServer) handleGetAccountByID(w http.ResponseWriter, r *http.Request)
 
 // Handle to create new account
 func (s *APIServer) handleCreateAccount(w http.ResponseWriter, r *http.Request) error {
-	CreateAccountReq := CreateAccountRequest{}
-	if err := json.NewDecoder(r.Body).Decode(&CreateAccountReq); err != nil {
+	req := CreateAccountRequest{}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		return err
 	}
 
-	account := NewAccount(CreateAccountReq.FirstName, CreateAccountReq.LastName)
-	if err := s.store.CreateAccount(account); err != nil {
-		return err
-	}
-
-	fmt.Println("Creating JWT")
-	tokenString, err := createJWT(account)
+	account, err := NewAccount(req.FirstName, req.LastName, req.Number)
 	if err != nil {
 		return err
 	}
-	fmt.Println(tokenString)
+	if err := s.store.CreateAccount(account); err != nil {
+		return err
+	}
 	return writeJSON(w, http.StatusOK, account)
 }
 
@@ -125,7 +153,7 @@ func (s *APIServer) handleTransfer(w http.ResponseWriter, r *http.Request) error
 
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50TnVtYmVyIjo3NzM0NCwiZXhwaXJlc0F0IjoxNTAwfQ.JignQQQkQvVYP9SyW1SIaKif8lAN0xwPtT6Dfd0Ao9o
 
-func createJWT(account *Account) (string, error) {
+func createJWT(account *Login) (string, error) {
 	claims := &jwt.MapClaims{
 		"expiresAt":     1500,
 		"accountNumber": account.Number,

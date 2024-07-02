@@ -34,7 +34,7 @@ func (s *PostgresStore) Init() error {
 }
 
 func (s *PostgresStore) createAccountTable() error {
-	query := `CREATE TABLE IF NOT EXISTS account (
+	queryAccount := `CREATE TABLE IF NOT EXISTS account (
 		id serial primary key,
 		first_name varchar(50),
 		last_name varchar(50),
@@ -42,8 +42,32 @@ func (s *PostgresStore) createAccountTable() error {
 		balance serial CHECK (balance >= 0),
 		created_at timestamp
 	  )`
-	_, err := s.db.Exec(query)
+	_, err := s.db.Exec(queryAccount)
+	if err != nil {
+		return err
+	}
+
+	queryUser := `CREATE TABLE IF NOT EXISTS users (
+		first_name varchar(200),
+		last_name varchar(200),
+		number serial PRIMARY KEY,
+		password varchar(200),
+		created_at timestamp
+	  )`
+	_, err = s.db.Exec(queryUser)
+
 	return err
+}
+
+func (s *PostgresStore) LoginUser(user *Login) error {
+	query := `insert into users (first_name, last_name, number, password, created_at)
+	values($1, $2, $3, $4, $5)`
+
+	_, err := s.db.Query(query, user.FirstName, user.LastName, user.Number, user.Password, user.CreatedAt)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // this will help to create account
@@ -86,6 +110,17 @@ func (s *PostgresStore) DeleteAccount(id int) error {
 		return fmt.Errorf("no account found with id: %d", id)
 	}
 	return nil
+}
+
+func (s *PostgresStore) GetAccountByNumber(number int) (*Account, error) {
+	rows, err := s.db.Query("select * from account where number = $1", number)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		return scanIntoAccount(rows)
+	}
+	return nil, fmt.Errorf("account with number: %d does not exist", number)
 }
 
 func (s *PostgresStore) GetAccountByID(id int) (*Account, error) {
