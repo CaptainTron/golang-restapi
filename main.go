@@ -2,8 +2,6 @@ package main
 
 import "log"
 
-// "fmt"
-
 func main() {
 
 	postgres, err := NewPostgresStore("user=postgres dbname=postgres password=user sslmode=disable ")

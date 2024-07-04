@@ -48,7 +48,7 @@ func (s *APIServer) Run() {
 	router.HandleFunc("/admin_applicants", (makeHTTPHandlerFunc(s.ListApplicants)))
 	router.HandleFunc("/admin_applicant/{id}", (makeHTTPHandlerFunc(s.GetApplicant)))
 	router.HandleFunc("/jobs", (makeHTTPHandlerFunc(s.ListJobs)))
-	router.HandleFunc("/apply_jobs/{id}", (makeHTTPHandlerFunc(s.ListJobs)))
+	router.HandleFunc("/apply_jobs/{id}", (makeHTTPHandlerFunc(s.GetJob_byId)))
 
 	log.Println("Server running on port: ", s.listenAddr)
 	http.ListenAndServe(s.listenAddr, router)
@@ -84,6 +84,7 @@ func (s *APIServer) LoginUser(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
+	// Create New Token everytime user login
 	tokenString, err := createJWT(login)
 	if err != nil {
 		return err
@@ -136,13 +137,22 @@ func (s *APIServer) UploadResume(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (s *APIServer) Admin_Createjob(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != "POST" {
+		return fmt.Errorf("method not allowed")
+	}
+
 	job := &Job{}
-	err := json.NewDecoder(r.Body).Decode(job)
+	err := json.NewDecoder(r.Body).Decode(&job)
 	if err != nil {
 		return err
 	}
 
-	err = s.store.PostJob(job)
+	newJob, err := CreateNewJob(job.Title, job.Description, job.TotalApplications, job.CompanyName, job.PostedBy)
+	if err != nil {
+		return err
+	}
+
+	err = s.store.PostJob(newJob)
 	if err != nil {
 		return err
 	}
@@ -169,6 +179,10 @@ func (s *APIServer) Admin_jobsInfo(w http.ResponseWriter, r *http.Request) error
 
 // Fetch list of all the users in the system
 func (s *APIServer) ListApplicants(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != "GET" {
+		return fmt.Errorf("method not allowed")
+	}
+
 	jobs, err := s.store.ListUsers()
 	if err != nil {
 		return err
@@ -195,6 +209,10 @@ func (s *APIServer) GetApplicant(w http.ResponseWriter, r *http.Request) error {
 
 // Get All the Jobs
 func (s *APIServer) ListJobs(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != "GET" {
+		return fmt.Errorf("method not allowed")
+	}
+
 	jobs, err := s.store.ListJobs()
 	if err != nil {
 		return err
@@ -204,6 +222,10 @@ func (s *APIServer) ListJobs(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (s *APIServer) GetJob_byId(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != "POST" {
+		return fmt.Errorf("method not allowed")
+	}
+
 	applicant_id, err := getId(r)
 	if err != nil {
 		return err
@@ -217,10 +239,9 @@ func (s *APIServer) GetJob_byId(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
+		///////////////////////////////////////////
+////////                 JSON Token               /////////////////////////
 
-
-	   ///////////////////////////////////////////
-///////                 JSON Token               /////////////////////////
 func createJWT(account *Login) (string, error) {
 	claims := &jwt.MapClaims{
 		"expiresAt":    1500,

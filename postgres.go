@@ -37,14 +37,14 @@ func (s *PostgresStore) createAccountTable() error {
 		name varchar(100),
 		email varchar(100),
 		address varchar(100),
-		user_type varchar(200),
+		user_type varchar(100),
 		password_hash varchar(200),
 		profile_headline varchar(200),
 		created_at timestamp
 		)`,
 
 		`CREATE TABLE IF NOT EXISTS Profile (
-		user_id BIGINT UNIQUE REFERENCES user_table(id),
+		user_id INTEGER UNIQUE REFERENCES user_table(id),
 		id serial primary key,
 		name varchar(100),
 		resume_file_address varchar(100),
@@ -57,7 +57,7 @@ func (s *PostgresStore) createAccountTable() error {
 		)`,
 
 		`CREATE TABLE IF NOT EXISTS Jobs (
-		user_id BIGINT UNIQUE REFERENCES user_table(id),
+		user_id INTEGER REFERENCES user_table(id),
 		id serial primary key,
 		title varchar(100),
 		description varchar(100),
@@ -102,10 +102,10 @@ func (s *PostgresStore) LoginUser(acc *Login) (*User, error) {
 
 // create new job
 func (s *PostgresStore) PostJob(job *Job) error {
-	query := `insert into Jobs (title, description, total_applications, company_name, posted_on)
-	values($1, $2, $3, $4, $5)`
+	query := `insert into Jobs (user_id, title, description, total_applications, company_name, posted_on)
+	values($1, $2, $3, $4, $5, $6)`
 
-	_, err := s.db.Query(query, job.Title, job.Description, job.TotalApplications, job.CompanyName, job.PostedOn)
+	_, err := s.db.Query(query, job.PostedBy, job.Title, job.Description, job.TotalApplications, job.CompanyName, job.PostedOn)
 	if err != nil {
 		return err
 	}
@@ -116,7 +116,7 @@ func (s *PostgresStore) PostJob(job *Job) error {
 func (s *PostgresStore) FetchJobApplicants(id int) (*Job, error) {
 	jobs := &Job{}
 	query := `select * from Jobs where id = $1`
-	err := s.db.QueryRow(query, id).Scan(&jobs.ID, &jobs.Title, &jobs.Description, &jobs.TotalApplications, &jobs.CompanyName, &jobs.PostedOn)
+	err := s.db.QueryRow(query, id).Scan(&jobs.PostedBy, &jobs.ID, &jobs.Title, &jobs.Description, &jobs.TotalApplications, &jobs.CompanyName, &jobs.PostedOn)
 	if err != nil {
 		return nil, err
 	}
@@ -181,6 +181,7 @@ func (s *PostgresStore) ListJobs() ([]*Job, error) {
 	for rows.Next() {
 		job := &Job{}
 		err := rows.Scan(
+			&job.PostedBy,
 			&job.ID,
 			&job.Title,
 			&job.Description,
@@ -199,7 +200,7 @@ func (s *PostgresStore) ListJobs() ([]*Job, error) {
 func (s *PostgresStore) GetJob_byId(job_id int) (*Job, error) {
 	job := &Job{}
 	query := "select * from Jobs where id = $1"
-	err := s.db.QueryRow(query, job_id).Scan(&job.ID, &job.Title, &job.Description, &job.TotalApplications, &job.CompanyName, &job.PostedOn)
+	err := s.db.QueryRow(query, job_id).Scan(&job.PostedBy, &job.ID, &job.Title, &job.Description, &job.TotalApplications, &job.CompanyName, &job.PostedOn)
 	if err != nil {
 		return nil, err
 	}

@@ -32,7 +32,7 @@ type User struct {
 	Profile         *Profile  `json:"profile"`
 }
 
-func SignUpAccount(name, email, address, UserType, profileheadline, password_hash string) (*User, error) {
+func SignUpAccount(name, email, address, usertype, profileheadline, password_hash string) (*User, error) {
 	encpw, err := bcrypt.GenerateFromPassword([]byte(password_hash), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, err
@@ -43,7 +43,7 @@ func SignUpAccount(name, email, address, UserType, profileheadline, password_has
 		Email:           email,
 		Address:         address,
 		PasswordHash:    string(encpw),
-		UserType:        UserType,
+		UserType:        usertype,
 		ProfileHeadline: profileheadline,
 		CreatedAt:       time.Now().UTC(),
 	}, nil
@@ -61,5 +61,17 @@ type Job struct {
 	PostedOn          time.Time `json:"posted_on"`
 	TotalApplications int       `json:"total_application"`
 	CompanyName       string    `json:"company_name"`
-	// PostedBy          *User
+	PostedBy          int       `json:"user_id"`
+}
+
+func CreateNewJob(title, description string, total_application int, company_name string, posted_by int) (*Job, error) {
+	return &Job{
+		// ID: id,
+		Title:             title,
+		Description:       description,
+		PostedOn:          time.Now().UTC(),
+		TotalApplications: total_application,
+		CompanyName:       company_name,
+		PostedBy:          posted_by,
+	}, nil
 }
