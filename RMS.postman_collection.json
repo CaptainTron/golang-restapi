@@ -1,0 +1,569 @@
+{
+	"info": {
+		"_postman_id": "55c92058-10bb-4c8e-b792-53b385cf1c10",
+		"name": "RMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24259607"
+	},
+	"item": [
+		{
+			"name": "Sign Up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Vaibhav\",\r\n    \"email\": \"email\",\r\n    \"address\": \"address\",\r\n    \"usertype\": \"usertype\",\r\n    \"password_hash\": \"123\",\r\n    \"profile_headline\": \"Vaibhav Yadav is Good Boy\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/signup"
+			},
+			"response": [
+				{
+					"name": "http://localhost:3000/signup",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Vaibhav\",\r\n    \"email\": \"email\",\r\n    \"address\": \"address\",\r\n    \"usertype\": \"usertype\",\r\n    \"password_hash\": \"123\",\r\n    \"profile_headline\": \"Vaibhav Yadav is Good Boy\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/signup"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 10:36:25 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "183"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 0,\n    \"name\": \"Vaibhav\",\n    \"email\": \"email\",\n    \"address\": \"address\",\n    \"user_type\": \"\",\n    \"profile_headline\": \"Vaibhav Yadav is Good Boy\",\n    \"created_at\": \"2024-07-05T10:36:25.4676002Z\",\n    \"profile\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "Login User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"email\",\r\n    \"password_hash\": \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/login"
+			},
+			"response": [
+				{
+					"name": "Login User",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email\",\r\n    \"password_hash\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/login"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 10:37:22 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "149"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50RW1haWwiOiJlbWFpbCIsImV4cGlyZXNBdCI6MTUwMH0.jrZ3urs1XidEaudhWIviS3k2SCCkrTxCvZBzD0Le5U4\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Upload Resume",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "auth",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50RW1haWwiOiJlbWFpbCIsImV4cGlyZXNBdCI6MTUwMH0.jrZ3urs1XidEaudhWIviS3k2SCCkrTxCvZBzD0Le5U4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "resume",
+							"type": "file",
+							"src": "/C:/Users/21vai/Downloads/VaibhavYadav_Resume (2).pdf"
+						}
+					]
+				},
+				"url": "http://localhost:3000/uploadresume"
+			},
+			"response": [
+				{
+					"name": "Upload Resume",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50RW1haWwiOiJlbWFpbCIsImV4cGlyZXNBdCI6MTUwMH0.jrZ3urs1XidEaudhWIviS3k2SCCkrTxCvZBzD0Le5U4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "resume",
+									"type": "file",
+									"src": "/C:/Users/21vai/Downloads/VaibhavYadav_Resume (2).pdf"
+								}
+							]
+						},
+						"url": "http://localhost:3000/uploadresume"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 10:37:56 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "55"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "File uploaded successfully: VaibhavYadav_Resume (2).pdf"
+				}
+			]
+		},
+		{
+			"name": "Create_job (Admin)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"title\",\r\n    \"description\": \"description\",\r\n    \"total_application\": 23,\r\n    \"company_name\": \"company_name\",\r\n    \"user_id\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/admin_createjob"
+			},
+			"response": [
+				{
+					"name": "Create_job (Admin)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"title\",\r\n    \"description\": \"description\",\r\n    \"total_application\": 23,\r\n    \"company_name\": \"company_name\",\r\n    \"user_id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/admin_createjob"
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 10:39:01 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "25"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"Job Created\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Fetch_job_by_id (Admin)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/admin_jobs/1"
+			},
+			"response": [
+				{
+					"name": "Fetch_job_by_id (Admin)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/admin_jobs/1"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 10:39:34 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "160"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"title\": \"title\",\n    \"description\": \"description\",\n    \"posted_on\": \"2024-07-04T12:34:54.861242Z\",\n    \"total_application\": 23,\n    \"company_name\": \"company_name\",\n    \"user_id\": 2\n}"
+				}
+			]
+		},
+		{
+			"name": "Get All the Users (Admin)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/admin_applicants"
+			},
+			"response": [
+				{
+					"name": "Get All the Users (Admin)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/admin_applicants"
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 10:40:30 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "728"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Vaibhav\",\n        \"email\": \"email\",\n        \"address\": \"address\",\n        \"user_type\": \"\",\n        \"profile_headline\": \"Vaibhav Yadav is Good Boy\",\n        \"created_at\": \"2024-07-04T11:54:54.801606Z\",\n        \"profile\": null\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Vaibhav\",\n        \"email\": \"email\",\n        \"address\": \"address\",\n        \"user_type\": \"\",\n        \"profile_headline\": \"Vaibhav Yadav is Good Boy\",\n        \"created_at\": \"2024-07-04T11:59:02.022674Z\",\n        \"profile\": null\n    },\n    {\n        \"id\": 3,\n        \"name\": \"Vaibhav\",\n        \"email\": \"email\",\n        \"address\": \"address\",\n        \"user_type\": \"\",\n        \"profile_headline\": \"Vaibhav Yadav is Good Boy\",\n        \"created_at\": \"2024-07-04T12:01:44.523416Z\",\n        \"profile\": null\n    },\n    {\n        \"id\": 4,\n        \"name\": \"Vaibhav\",\n        \"email\": \"email\",\n        \"address\": \"address\",\n        \"user_type\": \"\",\n        \"profile_headline\": \"Vaibhav Yadav is Good Boy\",\n        \"created_at\": \"2024-07-05T10:36:25.4676Z\",\n        \"profile\": null\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Resume_Parser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/octet-stream",
+						"type": "text"
+					},
+					{
+						"key": "apikey",
+						"value": "gNiXyflsFu3WNYCz1ZCxdWDb7oQg1Nl1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": "/C:/Users/21vai/OneDrive/Documents/Vaibhav/VaibhavYadavResume.pdf"
+					}
+				},
+				"url": {
+					"raw": "https://api.apilayer.com/resume_parser/upload",
+					"protocol": "https",
+					"host": [
+						"api",
+						"apilayer",
+						"com"
+					],
+					"path": [
+						"resume_parser",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "resume",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Resume_Parser",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/octet-stream",
+								"type": "text"
+							},
+							{
+								"key": "apikey",
+								"value": "gNiXyflsFu3WNYCz1ZCxdWDb7oQg1Nl1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/C:/Users/21vai/OneDrive/Documents/Vaibhav/VaibhavYadavResume.pdf"
+							}
+						},
+						"url": {
+							"raw": "https://api.apilayer.com/resume_parser/upload",
+							"protocol": "https",
+							"host": [
+								"api",
+								"apilayer",
+								"com"
+							],
+							"path": [
+								"resume_parser",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "resume",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 10:41:32 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "X-Cloud-Trace-Context",
+							"value": "af94350ba1dff02bec265a516b807407;o=1"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "X-RateLimit-Limit-Month",
+							"value": "100"
+						},
+						{
+							"key": "X-RateLimit-Remaining-Day",
+							"value": "81"
+						},
+						{
+							"key": "RateLimit-Reset",
+							"value": "2207912"
+						},
+						{
+							"key": "RateLimit-Limit",
+							"value": "100"
+						},
+						{
+							"key": "RateLimit-Remaining",
+							"value": "76"
+						},
+						{
+							"key": "X-RateLimit-Limit-Day",
+							"value": "100"
+						},
+						{
+							"key": "X-RateLimit-Remaining-Month",
+							"value": "76"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=RAWZ%2BIvUEiw4vYdPuVFTacbydRF9UN4qlTesGtmA4gZPRIIPs8ajSRxClGMjZhO0H4KdYNoAsQwIRBjsO4QPt7qcTeo1VU74uLiqNTqzUsIiZ1IHX1benynTOvFbk7jyh%2Fyg\"}],\"group\":\"cf-nel\",\"max_age\":604800}"
+						},
+						{
+							"key": "NEL",
+							"value": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "CF-RAY",
+							"value": "89e6be272af6f0fc-CDG"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"name\": \"Vaibhav Yadav\",\n    \"email\": \"21vaibhav11@gmail.com\",\n    \"skills\": [\n        \"Javascript\",\n        \"Cloud\",\n        \"Docker\",\n        \"Saas\",\n        \"Coding\",\n        \"Information technology\",\n        \"Servers\",\n        \"Linux\",\n        \"Aws\",\n        \"Django\",\n        \"Flask\",\n        \"C\",\n        \"Github\",\n        \"C++\",\n        \"Python\",\n        \"Algorithms\",\n        \"Api\",\n        \"Apis\",\n        \"Health\"\n    ],\n    \"education\": [\n        {\n            \"name\": \"Madan Mohan Malaviya University of Technology\",\n            \"dates\": [\n                \"January 2021\",\n                \"January 2025\"\n            ],\n            \"date_start\": \"January 2021\",\n            \"date_end\": \"January 2025\"\n        },\n        {\n            \"name\": \"Madan Mohan Malaviya University of Technology 2021\",\n            \"dates\": [\n                \"January 2025\"\n            ]\n        }\n    ],\n    \"experience\": [\n        {\n            \"title\": \"Backend Developer\",\n            \"dates\": [\n                \"January 1940\"\n            ],\n            \"location\": \"Gateway\",\n            \"organization\": \"July 2023 – Sept 2023\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get all Jobs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3000/jobs"
+			},
+			"response": [
+				{
+					"name": "Get all Jobs",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:3000/jobs"
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 10:41:59 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1123"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"title\": \"title\",\n        \"description\": \"description\",\n        \"posted_on\": \"2024-07-04T12:34:54.861242Z\",\n        \"total_application\": 23,\n        \"company_name\": \"company_name\",\n        \"user_id\": 2\n    },\n    {\n        \"id\": 2,\n        \"title\": \"title\",\n        \"description\": \"description\",\n        \"posted_on\": \"2024-07-04T12:34:56.899796Z\",\n        \"total_application\": 23,\n        \"company_name\": \"company_name\",\n        \"user_id\": 2\n    },\n    {\n        \"id\": 3,\n        \"title\": \"title\",\n        \"description\": \"description\",\n        \"posted_on\": \"2024-07-04T12:35:02.178403Z\",\n        \"total_application\": 23,\n        \"company_name\": \"company_name\",\n        \"user_id\": 2\n    },\n    {\n        \"id\": 5,\n        \"title\": \"title\",\n        \"description\": \"description\",\n        \"posted_on\": \"2024-07-04T12:35:10.712167Z\",\n        \"total_application\": 23,\n        \"company_name\": \"company_name\",\n        \"user_id\": 1\n    },\n    {\n        \"id\": 8,\n        \"title\": \"title\",\n        \"description\": \"description\",\n        \"posted_on\": \"2024-07-04T12:48:27.936623Z\",\n        \"total_application\": 23,\n        \"company_name\": \"company_name\",\n        \"user_id\": 1\n    },\n    {\n        \"id\": 9,\n        \"title\": \"title\",\n        \"description\": \"description\",\n        \"posted_on\": \"2024-07-04T12:48:29.667243Z\",\n        \"total_application\": 23,\n        \"company_name\": \"company_name\",\n        \"user_id\": 1\n    },\n    {\n        \"id\": 10,\n        \"title\": \"title\",\n        \"description\": \"description\",\n        \"posted_on\": \"2024-07-05T10:39:01.611441Z\",\n        \"total_application\": 23,\n        \"company_name\": \"company_name\",\n        \"user_id\": 1\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get JobsToApply ",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "http://localhost:3000/apply_jobs/1"
+			},
+			"response": [
+				{
+					"name": "Get JobsToApply ",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:3000/apply_jobs/1"
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jul 2024 10:42:19 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "160"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"title\": \"title\",\n    \"description\": \"description\",\n    \"posted_on\": \"2024-07-04T12:34:54.861242Z\",\n    \"total_application\": 23,\n    \"company_name\": \"company_name\",\n    \"user_id\": 2\n}"
+				}
+			]
+		}
+	]
+}

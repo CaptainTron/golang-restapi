@@ -94,6 +94,9 @@ func (s *APIServer) LoginUser(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (s *APIServer) UploadResume(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != "POST" {
+		return fmt.Errorf("method not allowed")
+	}
 	// Parse the multipart form
 	err := r.ParseMultipartForm(10 << 20) // 10 MB
 	if err != nil {
@@ -221,6 +224,7 @@ func (s *APIServer) ListJobs(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
+// Apply to job
 func (s *APIServer) GetJob_byId(w http.ResponseWriter, r *http.Request) error {
 	if r.Method != "POST" {
 		return fmt.Errorf("method not allowed")
@@ -239,7 +243,7 @@ func (s *APIServer) GetJob_byId(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
-		///////////////////////////////////////////
+///////////////////////////////////////////
 ////////                 JSON Token               /////////////////////////
 
 func createJWT(account *Login) (string, error) {
