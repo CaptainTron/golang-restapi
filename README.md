@@ -3,9 +3,9 @@
 This repository contains a REST server implementation for the Recruitment Management System (RMS) using Golang. 
 
 ### Implementation Details:
-- Created the necessary API endpoints for user authentication, profile creation, resume upload, job creation, and fetching job and applicant information.
+- Created API endpoints for user authentication, profile creation, resume upload, job creation, and fetching job and applicant information.
 - Implemented authentication using JWT tokens for secure access to the APIs.
-- Validated Uploaded resumes.
+- Saved Uploaded resumes.
 - Designed the database schema with appropriate models for users, profiles, and jobs.
 - Utilizes Postgres as the database.
 - Implemented role-based access control to restrict certain APIs to admin or applicant users.
